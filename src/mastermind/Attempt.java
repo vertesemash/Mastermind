@@ -2,6 +2,14 @@
 
 package mastermind;
 
+//******************************************************************************
+//  Attempt class
+//  A separate class which allows us to track player guesses and how many cows and
+//   bulls were found.
+//  Date Created: July 10th 2017
+//  Last Updated: July 11th 2017
+//******************************************************************************
+
 public class Attempt 
 {
     private int cows, bulls;
@@ -35,9 +43,11 @@ public class Attempt
         this.bulls = bulls;
     }
     
+    //Create a String which contains the guess code, number of cows, number of bulls
     @Override
     public String toString()
     {
+       
        String output = "";
        
        for(int element: playerGuess)
