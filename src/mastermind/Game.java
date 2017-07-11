@@ -1,6 +1,14 @@
 
 package mastermind;
 
+//******************************************************************************
+//  Game class
+//  Runs the various aspects of the game (validating input, comparing input to the code, etc).
+//  Date Created: July 10th 2017
+//  Last Updated: July 11th 2017
+//******************************************************************************
+
+//Import ArrayList, Scanner, Random, and WordUtils
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
@@ -9,16 +17,20 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public class Game 
 {
-    //If finisher is 0, continue game. If it is -1, player lost. If 1, player won.
+    //Attempts tracks the guesses, finisher is an int which determines how a game ends
     private int attempts, finisher;
     private Scanner userInput;
     private Random theRandom;
+    //gameAttempts contains all of the attempts in a given game
     private ArrayList<Attempt> gameAttempts;
+    //This is the secret code. Shh! Don't tell anyone!
     private int[] code;
+    //This boolean is used to track whether a user wants to play again or not
     private boolean reset;
     
     public Game()
     {
+        //Initialize variables
         userInput = new Scanner(System.in);
         attempts = 0;
         theRandom = new Random();
@@ -26,14 +38,13 @@ public class Game
         gameAttempts = new ArrayList();
         reset = true;
         finisher = 0;
+        //Generate code
         for(int i = 0; i < 4; i++)
-        {
             code[i] = theRandom.nextInt(8) + 1;
-        }
-        
+        //Debug statement: checks code value
         /*for(int number: code)
             System.out.println(number);*/
-        
+        //Game description
         System.out.println(WordUtils.wrap("Welcome to Cows and Bulls! In this game, "
                 + "a 4 digit code is randomly generated (digits are between 1 and 8) , "
                 + "and you have 10 attempts to crack the code."
@@ -42,6 +53,7 @@ public class Game
                 + "get a bull, you have the right number in the wrong place. \n", 100));
     }
     
+    //Controls the flow of the game
     public void runGame()
     {
        while (reset == true)
@@ -70,6 +82,8 @@ public class Game
        
        
     }
+    
+    //Get input from the user (either a code or menu options). Could probably be improved.
     private boolean getUserInput()
     {
        
@@ -98,10 +112,6 @@ public class Game
                         case 10:
                             if(gameAttempts.get(0) != null)
                                 printAttempts();
-                            isValidInput = false;
-                            break;
-                        case 420:
-                            System.out.println("420 blaze it");
                             isValidInput = false;
                             break;
                         default:
@@ -141,6 +151,7 @@ public class Game
         System.out.println("Guess added");
         return true;
     }
+    //Allows user to play the game again if they so choose
     private void reset()
     {
         boolean validInput = false;
@@ -188,6 +199,7 @@ public class Game
         
         
     }
+    //Execute end game scenarios depending on if player won, lost, or just doesn't wanna play
     private void endGame()
     {
         switch(finisher)
@@ -212,6 +224,7 @@ public class Game
         }
 
     }
+    //Compare the player's guess with the generated code
     private void validate(Attempt guess)
     {
         boolean[] shouldNotLookAt = new boolean[4];
@@ -241,6 +254,7 @@ public class Game
         guess.setBulls(bulls);
         printAttempts();
     }
+    //Print out a nice summary of a player's past attempts
     private void printAttempts()
     {
        for(Attempt userGuess: gameAttempts)
