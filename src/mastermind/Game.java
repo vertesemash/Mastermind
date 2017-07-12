@@ -42,8 +42,8 @@ public class Game
         for(int i = 0; i < 4; i++)
             code[i] = theRandom.nextInt(8) + 1;
         //Debug statement: checks code value
-        /*for(int number: code)
-            System.out.println(number);*/
+        for(int number: code)
+            System.out.println(number);
         //Game description
         System.out.println(WordUtils.wrap("Welcome to Cows and Bulls! In this game, "
                 + "a 4 digit code is randomly generated (digits are between 1 and 8) , "
@@ -107,15 +107,15 @@ public class Game
                     switch(Integer.parseInt(inputLine))
                     {
                         case 9:
-                            attempts = -19;
-                            return false;
+                            System.exit(0);
                         case 10:
                             if(gameAttempts.get(0) != null)
                                 printAttempts();
                             isValidInput = false;
                             break;
                         default:
-                           isValidInput = false; 
+                           isValidInput = false;
+                           break;
                     }   
                 }
                 else
@@ -124,7 +124,8 @@ public class Game
                     int i =0;
                     for(String element: inputAsString)
                     {
-                        System.out.println(element);
+                        //Debug printout
+                        //System.out.println(element);
                         userGuess[i] = Integer.parseInt(element);
                         i++;
                     }
@@ -134,6 +135,7 @@ public class Game
                         if((element > 8 || element < 1))
                         {
                             System.out.println("One of your numbers was outside of the number range (1-8)\n");
+                            
                             isValidInput = false;
                         }
 
@@ -143,6 +145,7 @@ public class Game
             catch(Exception e)
             {
                 //e.printStackTrace();
+                //System.out.println(e.getMessage());
                 System.out.println("Invalid data was inserted. Come on now!\n");
                 isValidInput = false;    
             }    
