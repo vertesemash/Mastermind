@@ -31,19 +31,7 @@ public class Game
     public Game()
     {
         //Initialize variables
-        userInput = new Scanner(System.in);
-        attempts = 0;
-        theRandom = new Random();
-        code = new int[4];
-        gameAttempts = new ArrayList();
-        reset = true;
-        finisher = 0;
-        //Generate code
-        for(int i = 0; i < 4; i++)
-            code[i] = theRandom.nextInt(8) + 1;
-        //Debug statement: checks code value
-        for(int number: code)
-            System.out.println(number);
+        initialize();
         //Game description
         System.out.println(WordUtils.wrap("Welcome to Cows and Bulls! In this game, "
                 + "a 4 digit code is randomly generated (digits are between 1 and 8) , "
@@ -178,20 +166,7 @@ public class Game
                 switch(response.toLowerCase().charAt(0))
                 {
                     case 'y':
-                        userInput = new Scanner(System.in);
-                        attempts = 0;
-                        theRandom = new Random();
-                        code = new int[4];
-                        gameAttempts = new ArrayList();
-                        reset = true;
-                        finisher = 0;
-                        for(int i = 0; i < 4; i++)
-                        {
-                            code[i] = theRandom.nextInt(8) + 1;
-                        }
-
-                        for(int number: code)
-                            System.out.println(number);
+                        initialize();
                         break;
                     case 'n':
                         System.out.println("Quitting game...");
@@ -222,12 +197,12 @@ public class Game
                 reset();
                 break;
             case -1:
-                System.out.println("\n-------------------------------------------------------------\nYou lost! Loser! Here are your guesses!");
+                System.out.println("\n-------------------------------------------------------------\nYou lost! Loser! Here is the code!");
+                for(int element: code)
+                    System.out.print(element + ",");
+                System.out.println("\n-------------------------------------------------------------\nHere are your guesses!");
                 printAttempts();
                 reset();
-                break;
-            case -2:
-                System.out.println("Quitting game...");
                 break;
             default:
                 System.out.println("\n-------------------------------------------------------------\nNot entirely sure how it ended up here, but game will finish executing.");
@@ -272,5 +247,24 @@ public class Game
        for(Attempt userGuess: gameAttempts)
            System.out.println(userGuess.toString());
        System.out.print("\n");
+    }
+    private void initialize()
+    {
+        //initialize variables
+        userInput = new Scanner(System.in);
+        attempts = 0;
+        theRandom = new Random();
+        code = new int[4];
+        gameAttempts = new ArrayList();
+        reset = true;
+        finisher = 0;
+        //generate our code
+        for(int i = 0; i < 4; i++)
+        {
+            code[i] = theRandom.nextInt(8) + 1;
+        }
+        /*
+        for(int number: code)
+            System.out.println(number);*/
     }
 }
