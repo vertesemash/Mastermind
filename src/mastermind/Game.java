@@ -56,27 +56,30 @@ public class Game
     //Controls the flow of the game
     public void runGame()
     {
+       //While our reset control variable is true, run the game
        while (reset == true)
        {
            reset = false;
+           //While we are not in a winning or losing state, execute a round of the game 
            while(finisher == 0)
            {
+               //If user input is valid, validate their code against our code and increase attempts counter
                if(getUserInput())
                {
+                   //Get most recent attempt and check it
                    validate(gameAttempts.get(attempts));
+                   //If user guessed all 4 digits correctly, we execute win state
                    if(gameAttempts.get(attempts).getCows() == 4)
                    {
                         finisher = 1;
                    }
                }
-               else
-               {
-                   finisher = -2;
-               }
+               //Increment attempts
                attempts++;
                if(attempts > 9)
                    finisher = -1;
            }
+           //Once we are in a winning or losing state, run our end game
            endGame();
        }
        
@@ -86,24 +89,29 @@ public class Game
     //Get input from the user (either a code or menu options). Could probably be improved.
     private boolean getUserInput()
     {
-       
+        //Declare and initialize variables
         int[] userGuess = new int[4];
         String inputLine;
         boolean isValidInput = false;
-
+        
+        //While our input is not valid, try to get valid input
         while(isValidInput == false)
         {
             isValidInput = true;
-            
+            //Output rules for input
             System.out.println("Please input your guess (4 numbers from 1 to 8), separated by commas, on one line. \n"
                 + "If you would like to end the game, please input 9. \n"
                 + "If you would like to see all previous attempts, please input 10\n");
-            
+            //Try to parse user input. If the input is not numeric, error is thrown and user has to input data again
             try
             {
+                //We grab input by line because it allows us to see if input is single digit
+                //And a line of input can be turned into an array easily
                 inputLine = userInput.nextLine();
+                //If our input only has a single digit, check if we're ending the game or doing something else
                 if(!inputLine.contains(","))
                 {
+                    //9 ends game, 10 outputs attempts. Other options can be added
                     switch(Integer.parseInt(inputLine))
                     {
                         case 9:
@@ -120,8 +128,10 @@ public class Game
                 }
                 else
                 {
+                    //Split input by commas
                     String[] inputAsString = inputLine.split(",");
-                    int i =0;
+                    int i = 0;
+                    //Get each element from the String array and convert to Integer
                     for(String element: inputAsString)
                     {
                         //Debug printout
@@ -129,13 +139,12 @@ public class Game
                         userGuess[i] = Integer.parseInt(element);
                         i++;
                     }
-
+                    //Check each element in the array
                     for(int element: userGuess)
                     {
                         if((element > 8 || element < 1))
                         {
                             System.out.println("One of your numbers was outside of the number range (1-8)\n");
-                            
                             isValidInput = false;
                         }
 
@@ -151,7 +160,7 @@ public class Game
             }    
         }
         gameAttempts.add(new Attempt(userGuess));
-        System.out.println("Guess added");
+        //System.out.println("Guess added");
         return true;
     }
     //Allows user to play the game again if they so choose
