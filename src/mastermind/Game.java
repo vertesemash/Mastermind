@@ -36,9 +36,11 @@ public class Game
         System.out.println(WordUtils.wrap("Welcome to Cows and Bulls! In this game, "
                 + "a 4 digit code is randomly generated (digits are between 1 and 8) , "
                 + "and you have 10 attempts to crack the code."
-                + "You determine what the code is using Cows and Bulls. If you get a Cow, "
+                + " You determine what the code is using Cows and Bulls. If you get a Cow, "
                 + "that means you have the right number in the right place. If you "
-                + "get a bull, you have the right number in the wrong place. \n", 100));
+                + "get a bull, you have the right number in the wrong place. "
+                + "Dupilcate numbers ARE allowed, and one instance of a number in a code with multiple instances"
+                + "of that number will register bulls for each instance.\n", 100));
     }
     
     //Controls the flow of the game
@@ -52,20 +54,22 @@ public class Game
            while(finisher == 0)
            {
                //If user input is valid, validate their code against our code and increase attempts counter
+               
                if(getUserInput())
                {
                    //Get most recent attempt and check it
                    validate(gameAttempts.get(attempts));
+                   
                    //If user guessed all 4 digits correctly, we execute win state
+                   //Otherwise, we check and see if that was their last attempt. If so, they lose.
                    if(gameAttempts.get(attempts).getCows() == 4)
-                   {
                         finisher = 1;
-                   }
+                   else if(attempts == 9)
+                       finisher = -1;
                }
-               //Increment attempts
                attempts++;
-               if(attempts > 9)
-                   finisher = -1;
+               //Increment attempts
+
            }
            //Once we are in a winning or losing state, run our end game
            endGame();
@@ -105,8 +109,10 @@ public class Game
                         case 9:
                             System.exit(0);
                         case 10:
-                            if(gameAttempts.get(0) != null)
+                            if(!gameAttempts.isEmpty())
                                 printAttempts();
+                            else
+                                System.out.println("Can't do that, sorry!\n");
                             isValidInput = false;
                             break;
                         default:
@@ -244,8 +250,9 @@ public class Game
     //Print out a nice summary of a player's past attempts
     private void printAttempts()
     {
-       for(Attempt userGuess: gameAttempts)
-           System.out.println(userGuess.toString());
+       System.out.println("Attempts:" + "\n--------------------------------------------------------------");
+        for(Attempt userGuess: gameAttempts)
+           System.out.println("Attempt " + (gameAttempts.indexOf(userGuess) + 1) +": " + userGuess.toString());
        System.out.print("\n");
     }
     private void initialize()
@@ -263,8 +270,8 @@ public class Game
         {
             code[i] = theRandom.nextInt(8) + 1;
         }
-        /*
-        for(int number: code)
+        
+        /*for(int number: code)
             System.out.println(number);*/
     }
 }
